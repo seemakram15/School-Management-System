@@ -11,22 +11,26 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
   const sectionId = sp.section_id;
   const status = sp.status ?? "1";
 
-  const { data: classes } = await supabase.from("i_classes").select("id, name").eq("status", 1).order("numeric_value");
-  const { data: sections } = await supabase.from("sections").select("id, name, class_id").eq("status", 1);
+  const { data: classesRaw } = await supabase.from("i_classes").select("id, name").order("numeric_value");
+  const { data: sectionsRaw } = await supabase.from("sections").select("id, name, class_id");
+  const classes = (classesRaw ?? []) as { id: number; name: string }[];
+  const sections = (sectionsRaw ?? []) as { id: number; name: string; class_id: number }[];
 
+  type RegRow = { id: number; regi_no: string; roll_no: string | null; card_no: string | null; is_promoted: boolean | null; status: number; students: { id: number; name: string; phone_no: string | null; email: string | null; photo: string | null } | null; i_classes: { name: string } | null; sections: { name: string } | null };
   let query = supabase
     .from("registrations")
-    .select("id, regi_no, roll_no, card_no, is_promoted, status, students(id, name, phone_no, email, photo), i_classes(name), sections(name)")
-    .eq("status", parseInt(status));
+    .select("id, regi_no, roll_no, card_no, is_promoted, status, students(id, name, phone_no, email, photo), i_classes(name), sections(name)");
 
-  if (classId) query = query.eq("class_id", classId);
-  if (sectionId) query = query.eq("section_id", sectionId);
+  if (classId) query = query.eq("class_id", parseInt(classId));
+  if (sectionId) query = query.eq("section_id", parseInt(sectionId));
+  if (status) query = query.eq("status", parseInt(status));
 
-  const { data: students } = await query.order("roll_no");
+  const { data: studentsRaw } = await query.order("roll_no");
+  const students = (studentsRaw ?? []) as unknown as RegRow[];
 
   const filteredSections = classId
-    ? (sections ?? []).filter(s => String(s.class_id) === classId)
-    : (sections ?? []);
+    ? sections.filter(s => String(s.class_id) === classId)
+    : sections;
 
   return (
     <div className="space-y-5">
@@ -94,9 +98,9 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
                 </tr>
               )}
               {(students ?? []).map((reg, i) => {
-                const s = reg.students as unknown as { name: string; phone_no: string; photo: string | null };
-                const cls = reg.i_classes as unknown as { name: string } | null;
-                const sec = reg.sections as unknown as { name: string } | null;
+                const s = reg.students;
+                const cls = reg.i_classes;
+                const sec = reg.sections;
                 return (
                   <tr key={reg.id} className="border-b border-border hover:bg-muted/30 transition-colors">
                     <td className="p-3 text-muted-foreground">{i + 1}</td>

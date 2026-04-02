@@ -6,7 +6,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
   const { id } = await params;
   const { data, error } = await supabase
     .from("student_attendances")
-    .select("attendance_date, status")
+    .select("attendance_date, attendance")
     .eq("registration_id", parseInt(id))
     .order("attendance_date", { ascending: false })
     .limit(100);

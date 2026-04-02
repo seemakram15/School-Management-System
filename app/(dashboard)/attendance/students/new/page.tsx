@@ -31,12 +31,12 @@ export default function StudentAttendanceNewPage() {
   const [meta, setMeta] = useState<{ className: string; sectionName: string }>({ className: "", sectionName: "" });
 
   useEffect(() => {
-    fetch("/api/academic/classes").then(r => r.json()).then(setClasses);
+    fetch("/api/academic/classes").then(r => r.json()).then(d => setClasses(Array.isArray(d) ? d : []));
   }, []);
 
   useEffect(() => {
     if (classId) {
-      fetch(`/api/academic/sections?class_id=${classId}`).then(r => r.json()).then(setSections);
+      fetch(`/api/academic/sections?class_id=${classId}`).then(r => r.json()).then(d => setSections(Array.isArray(d) ? d : []));
     }
   }, [classId]);
 

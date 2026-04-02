@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
   const { searchParams } = new URL(request.url);
   const classId = searchParams.get("class_id");
   const sectionId = searchParams.get("section_id");
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   if (date && classId && sectionId) {
     const { data } = await supabase
       .from("student_attendances")
-      .select("id, registration_id, attendance_date, status")
+      .select("id, registration_id, attendance_date, attendance")
       .eq("attendance_date", date)
       .eq("class_id", classId)
       .eq("section_id", sectionId);
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const end = new Date(parseInt(y), parseInt(m), 0).toISOString().split("T")[0];
     const { data } = await supabase
       .from("student_attendances")
-      .select("id, registration_id, attendance_date, status")
+      .select("id, registration_id, attendance_date, attendance")
       .eq("class_id", classId)
       .eq("section_id", sectionId)
       .gte("attendance_date", start)
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
   const { class_id, section_id, academic_year_id, attendance_date, registrationIds, present } = await request.json();
 
   const rows = registrationIds.map((regId: number) => ({
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     section_id: parseInt(section_id),
     academic_year_id: parseInt(academic_year_id),
     attendance_date,
-    status: present?.[regId] ? 1 : 0,
+    attendance: present?.[regId] ? 1 : 0,
   }));
 
   const { error } = await supabase.from("student_attendances").upsert(rows, { onConflict: "registration_id,attendance_date" });

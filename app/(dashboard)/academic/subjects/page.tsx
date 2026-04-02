@@ -4,7 +4,9 @@ import { DataTable } from "@/components/data-table/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Plus, Pencil } from "lucide-react";
-import { SUBJECT_TYPE } from "@/lib/utils";
+
+const SUBJECT_TYPE_LABEL: Record<string, string> = { core: "Core", selective: "Selective", elective: "Elective" };
+const SUBJECT_TYPE_VARIANT: Record<string, "info" | "warning" | "success"> = { core: "info", selective: "warning", elective: "success" };
 
 export default async function SubjectsPage() {
   const supabase = await createClient();
@@ -33,25 +35,22 @@ export default async function SubjectsPage() {
           data={rows}
           searchKeys={["name"]}
           columns={[
-            {
-              key: "i_classes", label: "Class",
-              render: r => (r as unknown as { i_classes: { name: string } | null }).i_classes?.name ?? "-",
-            },
+            { key: "i_classes", label: "Class" },
             { key: "name", label: "Subject Name" },
-            {
-              key: "type", label: "Type",
-              render: r => <Badge variant={r.type === 1 ? "info" : "warning"}>{SUBJECT_TYPE[r.type as 1 | 2]}</Badge>,
-            },
-            {
-              key: "status", label: "Status",
-              render: r => <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
-            },
+            { key: "type", label: "Type" },
+            { key: "status", label: "Status" },
           ]}
-          actions={row => (
-            <Link href={`/academic/subjects/${row.id}/edit`}>
+          rows={rows.map(r => ({
+            i_classes: (r as unknown as { i_classes: { name: string } | null }).i_classes?.name ?? "-",
+            name: r.name,
+            type: <Badge variant={SUBJECT_TYPE_VARIANT[r.type] ?? "info"}>{SUBJECT_TYPE_LABEL[r.type] ?? r.type}</Badge>,
+            status: <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
+          }))}
+          rowActions={rows.map(row => (
+            <Link key={row.id} href={`/academic/subjects/${row.id}/edit`}>
               <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
             </Link>
-          )}
+          ))}
         />
       </div>
     </div>

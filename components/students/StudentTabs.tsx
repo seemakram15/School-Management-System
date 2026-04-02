@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { formatDate } from "@/lib/utils";
 
 interface Subject { name: string; code: string; type: string; }
-interface Attendance { attendance_date: string; status: number; }
+interface Attendance { attendance_date: string; attendance: number; }
 interface MarkResult { exam: string; subject: string; total_marks: number; is_absent: boolean; }
 
 const STATUS_LABEL: Record<number, string> = { 1: "Present", 0: "Absent", 2: "Late" };
@@ -21,13 +21,16 @@ export default function StudentTabs({ registrationId, children }: { registration
     try {
       if (t === "subjects") {
         const res = await fetch(`/api/students/${registrationId}/subjects`);
-        setSubjects(await res.json());
+        const d = await res.json();
+        setSubjects(Array.isArray(d) ? d : []);
       } else if (t === "attendance") {
         const res = await fetch(`/api/students/${registrationId}/attendance`);
-        setAttendance(await res.json());
+        const d = await res.json();
+        setAttendance(Array.isArray(d) ? d : []);
       } else if (t === "marks") {
         const res = await fetch(`/api/students/${registrationId}/marks`);
-        setMarks(await res.json());
+        const d = await res.json();
+        setMarks(Array.isArray(d) ? d : []);
       }
       setLoadedTabs(s => new Set([...s, t]));
     } catch { /* ignore */ }
@@ -100,8 +103,8 @@ export default function StudentTabs({ registrationId, children }: { registration
                   {attendance.map((a, i) => (
                     <tr key={i} className="border-b border-border hover:bg-muted/20">
                       <td className="p-2">{formatDate(a.attendance_date)}</td>
-                      <td className={`p-2 font-medium ${STATUS_COLOR[a.status] ?? ""}`}>
-                        {STATUS_LABEL[a.status] ?? a.status}
+                      <td className={`p-2 font-medium ${STATUS_COLOR[a.attendance] ?? ""}`}>
+                        {STATUS_LABEL[a.attendance] ?? a.attendance}
                       </td>
                     </tr>
                   ))}

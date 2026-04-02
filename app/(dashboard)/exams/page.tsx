@@ -34,21 +34,21 @@ export default async function ExamsPage() {
           searchKeys={["name"]}
           columns={[
             { key: "name", label: "Exam Name" },
-            {
-              key: "academic_years", label: "Academic Year",
-              render: r => (r as unknown as { academic_years: { title: string } | null }).academic_years?.title ?? "-",
-            },
-            { key: "created_at", label: "Created", render: r => formatDate(r.created_at) },
-            {
-              key: "status", label: "Status",
-              render: r => <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
-            },
+            { key: "academic_years", label: "Academic Year" },
+            { key: "created_at", label: "Created" },
+            { key: "status", label: "Status" },
           ]}
-          actions={row => (
-            <Link href={`/exams/${row.id}/edit`}>
+          rows={rows.map(r => ({
+            name: r.name,
+            academic_years: (r as unknown as { academic_years: { title: string } | null }).academic_years?.title ?? "-",
+            created_at: formatDate(r.created_at),
+            status: <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
+          }))}
+          rowActions={rows.map(row => (
+            <Link key={row.id} href={`/exams/${row.id}/edit`}>
               <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
             </Link>
-          )}
+          ))}
         />
       </div>
     </div>

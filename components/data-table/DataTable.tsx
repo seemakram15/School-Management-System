@@ -7,43 +7,55 @@ import { cn } from "@/lib/utils";
 interface Column {
   key: string;
   label: string;
+  className?: string;
+  // Alternative to the parent-supplied `rows` prop: derive this column's cell
+  // straight from the raw row. Handy for server components rendering a single
+  // small table where precomputing a parallel `rows` array is unnecessary.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (row: any) => React.ReactNode;
-  className?: string;
 }
 
 interface DataTableProps {
+  // Raw rows, used for search matching. Rendered cell content, when it
+  // differs from the raw value (badges, formatted dates, fallbacks), is
+  // supplied via `rows` instead — render functions can't cross the
+  // server/client boundary, but resolved React nodes can.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
+  // Precomputed display content per row, parallel to `data`. Falls back to
+  // raw `data` values when omitted.
+  rows?: Record<string, React.ReactNode>[];
   columns: Column[];
   searchable?: boolean;
   searchKeys?: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actions?: (row: any) => React.ReactNode;
+  // Precomputed actions cell per row, parallel to `data`.
+  rowActions?: React.ReactNode[];
   emptyText?: string;
 }
 
 export function DataTable({
   data,
+  rows,
   columns,
   searchable = true,
   searchKeys = [],
-  actions,
+  rowActions,
   emptyText = "No records found.",
 }: DataTableProps) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 15;
 
-  const filtered = searchable && search
-    ? data.filter(row =>
-        searchKeys.some(key => String(row[key] ?? "").toLowerCase().includes(search.toLowerCase()))
+  const allIndices = data.map((_, i) => i);
+  const filteredIndices = searchable && search
+    ? allIndices.filter(i =>
+        searchKeys.some(key => String(data[i][key] ?? "").toLowerCase().includes(search.toLowerCase()))
       )
-    : data;
+    : allIndices;
 
-  const total = filtered.length;
+  const total = filteredIndices.length;
   const pages = Math.ceil(total / pageSize);
-  const rows = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const pageIndices = filteredIndices.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <div className="space-y-3">
@@ -68,27 +80,27 @@ export function DataTable({
                   {col.label}
                 </th>
               ))}
-              {actions && <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wide">Actions</th>}
+              {rowActions && <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wide">Actions</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {rows.length === 0 ? (
+            {pageIndices.length === 0 ? (
               <tr>
-                <td colSpan={columns.length + (actions ? 1 : 0)} className="px-4 py-10 text-center text-muted-foreground">
+                <td colSpan={columns.length + (rowActions ? 1 : 0)} className="px-4 py-10 text-center text-muted-foreground">
                   {emptyText}
                 </td>
               </tr>
             ) : (
-              rows.map((row, i) => (
+              pageIndices.map(i => (
                 <tr key={i} className="hover:bg-muted/30 transition-colors">
                   {columns.map(col => (
                     <td key={String(col.key)} className={cn("px-4 py-3 text-foreground", col.className)}>
-                      {col.render ? col.render(row) : String(row[col.key] ?? "-")}
+                      {col.render ? col.render(data[i]) : rows ? rows[i][col.key] : String(data[i][col.key] ?? "-")}
                     </td>
                   ))}
-                  {actions && (
+                  {rowActions && (
                     <td className="px-4 py-3 text-right">
-                      {actions(row)}
+                      {rowActions[i]}
                     </td>
                   )}
                 </tr>

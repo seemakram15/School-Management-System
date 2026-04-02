@@ -41,14 +41,14 @@ export default function MarksNewPage() {
   const [step, setStep] = useState<"filter" | "entry">("filter");
 
   useEffect(() => {
-    fetch("/api/academic/classes").then(r => r.json()).then(setClasses);
-    fetch("/api/exams").then(r => r.json()).then(setExams);
+    fetch("/api/academic/classes").then(r => r.json()).then(d => setClasses(Array.isArray(d) ? d : []));
+    fetch("/api/exams").then(r => r.json()).then(d => setExams(Array.isArray(d) ? d : []));
   }, []);
 
   useEffect(() => {
     if (classId) {
-      fetch(`/api/academic/sections?class_id=${classId}`).then(r => r.json()).then(setSections);
-      fetch(`/api/academic/subjects?class_id=${classId}`).then(r => r.json()).then(setSubjects);
+      fetch(`/api/academic/sections?class_id=${classId}`).then(r => r.json()).then(d => setSections(Array.isArray(d) ? d : []));
+      fetch(`/api/academic/subjects?class_id=${classId}`).then(r => r.json()).then(d => setSubjects(Array.isArray(d) ? d : []));
     }
   }, [classId]);
 

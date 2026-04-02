@@ -20,26 +20,27 @@ export async function POST(request: NextRequest) {
     .eq("exam_id", exam_id)
     .eq("class_id", class_id);
 
-  const { data: grades } = await supabase.from("grades").select("*").order("mark_from", { ascending: false });
+  const { data: grades } = await supabase.from("grades").select("*").order("percent_from", { ascending: false });
 
   const results = students.map(student => {
     const studentMarks = allMarks?.filter(m => m.registration_id === student.id) ?? [];
-    const totalMarks = studentMarks.reduce((s, m) => s + (m.total_marks || 0), 0);
+    const obtainedMarks = studentMarks.reduce((s, m) => s + (m.total_marks || 0), 0);
     const maxMarks = studentMarks.length * 100;
-    const percentage = maxMarks > 0 ? (totalMarks / maxMarks) * 100 : 0;
+    const percentage = maxMarks > 0 ? (obtainedMarks / maxMarks) * 100 : 0;
     const isAbsent = studentMarks.some(m => m.is_absent);
 
-    const grade = grades?.find(g => percentage >= g.mark_from && percentage <= g.mark_to);
+    const grade = grades?.find(g => percentage >= g.percent_from && percentage <= g.percent_to);
 
     return {
       registration_id: student.id,
       exam_id: parseInt(exam_id),
       academic_year_id: parseInt(academic_year_id),
       class_id: parseInt(class_id),
-      total_marks: totalMarks,
+      total_marks: maxMarks,
+      obtained_marks: obtainedMarks,
       percentage: Math.round(percentage * 100) / 100,
       grade_id: grade?.id ?? null,
-      is_passed: !isAbsent && percentage >= (grade?.pass_mark ?? 0) ? 1 : 0,
+      is_pass: !isAbsent && percentage >= (grade?.pass_mark ?? 0),
       publish_date,
     };
   });

@@ -13,8 +13,8 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json(
     (data ?? []).map(m => ({
-      exam: (m.exams as { name: string })?.name ?? "—",
-      subject: (m.subjects as { name: string })?.name ?? "—",
+      exam: (m.exams as unknown as { name: string })?.name ?? "—",
+      subject: (m.subjects as unknown as { name: string })?.name ?? "—",
       total_marks: m.total_marks,
       is_absent: m.is_absent === 1,
     }))

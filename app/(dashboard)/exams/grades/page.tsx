@@ -32,19 +32,23 @@ export default async function GradesPage() {
           searchKeys={["name"]}
           columns={[
             { key: "name", label: "Grade" },
-            {
-              key: "academic_years", label: "Academic Year",
-              render: r => (r as unknown as { academic_years: { title: string } | null }).academic_years?.title ?? "-",
-            },
-            { key: "percent_from", label: "% From", render: r => `${r.percent_from}%` },
-            { key: "percent_to", label: "% To", render: r => `${r.percent_to}%` },
+            { key: "academic_years", label: "Academic Year" },
+            { key: "percent_from", label: "% From" },
+            { key: "percent_to", label: "% To" },
             { key: "grade_point", label: "GPA" },
           ]}
-          actions={row => (
-            <Link href={`/exams/grades/${row.id}/edit`}>
+          rows={rows.map(r => ({
+            name: r.name,
+            academic_years: (r as unknown as { academic_years: { title: string } | null }).academic_years?.title ?? "-",
+            percent_from: `${r.percent_from}%`,
+            percent_to: `${r.percent_to}%`,
+            grade_point: r.grade_point,
+          }))}
+          rowActions={rows.map(row => (
+            <Link key={row.id} href={`/exams/grades/${row.id}/edit`}>
               <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
             </Link>
-          )}
+          ))}
         />
       </div>
     </div>

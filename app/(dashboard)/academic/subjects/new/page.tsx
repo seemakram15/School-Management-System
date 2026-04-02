@@ -16,7 +16,7 @@ export default function SubjectNewPage() {
   const [classes, setClasses] = useState<IClass[]>([]);
   const [form, setForm] = useState({ name: "", code: "", class_id: "", type: "core" });
 
-  useEffect(() => { fetch("/api/academic/classes").then(r => r.json()).then(setClasses); }, []);
+  useEffect(() => { fetch("/api/academic/classes").then(r => r.json()).then(d => setClasses(Array.isArray(d) ? d : [])); }, []);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }));

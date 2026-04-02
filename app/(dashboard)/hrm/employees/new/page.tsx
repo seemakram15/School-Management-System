@@ -27,7 +27,7 @@ export default function EmployeeNewPage() {
   });
 
   useEffect(() => {
-    fetch("/api/roles").then(r => r.json()).then(setRoles).catch(() => {});
+    fetch("/api/roles").then(r => r.json()).then(d => setRoles(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>

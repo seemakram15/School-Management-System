@@ -32,18 +32,20 @@ export default async function ClassesPage() {
           data={rows}
           searchKeys={["name"]}
           columns={[
-            { key: "numeric_value", label: "#", render: r => r.numeric_value ?? "-" },
+            { key: "numeric_value", label: "#" },
             { key: "name", label: "Class Name" },
-            {
-              key: "status", label: "Status",
-              render: r => <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
-            },
+            { key: "status", label: "Status" },
           ]}
-          actions={row => (
-            <Link href={`/academic/classes/${row.id}/edit`}>
+          rows={rows.map(r => ({
+            numeric_value: r.numeric_value ?? "-",
+            name: r.name,
+            status: <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
+          }))}
+          rowActions={rows.map(row => (
+            <Link key={row.id} href={`/academic/classes/${row.id}/edit`}>
               <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
             </Link>
-          )}
+          ))}
         />
       </div>
     </div>

@@ -11,6 +11,6 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json(
-    (data ?? []).map(r => ({ name: (r.subjects as { name: string; code: string })?.name, code: (r.subjects as { name: string; code: string })?.code, type: r.type }))
+    (data ?? []).map(r => ({ name: (r.subjects as unknown as { name: string; code: string })?.name, code: (r.subjects as unknown as { name: string; code: string })?.code, type: r.type }))
   );
 }

@@ -24,33 +24,28 @@ export default async function ResultsPage() {
           data={rows}
           searchKeys={[]}
           columns={[
-            {
-              key: "registrations", label: "Student",
-              render: r => (r as unknown as { registrations: { students: { name: string } | null; i_classes: { name: string } | null } | null }).registrations?.students?.name ?? "-",
-            },
-            {
-              key: "exams", label: "Exam",
-              render: r => (r as unknown as { exams: { name: string } | null }).exams?.name ?? "-",
-            },
-            {
-              key: "registrations_class", label: "Class",
-              render: r => (r as unknown as { registrations: { i_classes: { name: string } | null } | null }).registrations?.i_classes?.name ?? "-",
-            },
+            { key: "registrations", label: "Student" },
+            { key: "exams", label: "Exam" },
+            { key: "registrations_class", label: "Class" },
             { key: "total_marks", label: "Total" },
             { key: "obtained_marks", label: "Obtained" },
-            { key: "percentage", label: "%", render: r => `${r.percentage}%` },
-            {
-              key: "grades", label: "Grade",
-              render: r => {
-                const g = (r as unknown as { grades: { name: string } | null }).grades;
-                return g ? <Badge variant="info">{g.name}</Badge> : "-";
-              },
-            },
-            {
-              key: "is_pass", label: "Result",
-              render: r => <Badge variant={r.is_pass ? "success" : "danger"}>{r.is_pass ? "Pass" : "Fail"}</Badge>,
-            },
+            { key: "percentage", label: "%" },
+            { key: "grades", label: "Grade" },
+            { key: "is_pass", label: "Result" },
           ]}
+          rows={rows.map(r => {
+            const grade = (r as unknown as { grades: { name: string } | null }).grades;
+            return {
+              registrations: (r as unknown as { registrations: { students: { name: string } | null; i_classes: { name: string } | null } | null }).registrations?.students?.name ?? "-",
+              exams: (r as unknown as { exams: { name: string } | null }).exams?.name ?? "-",
+              registrations_class: (r as unknown as { registrations: { i_classes: { name: string } | null } | null }).registrations?.i_classes?.name ?? "-",
+              total_marks: r.total_marks,
+              obtained_marks: r.obtained_marks,
+              percentage: `${r.percentage}%`,
+              grades: grade ? <Badge variant="info">{grade.name}</Badge> : "-",
+              is_pass: <Badge variant={r.is_pass ? "success" : "danger"}>{r.is_pass ? "Pass" : "Fail"}</Badge>,
+            };
+          })}
         />
       </div>
     </div>

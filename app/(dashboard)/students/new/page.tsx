@@ -44,7 +44,7 @@ export default function StudentNewPage() {
   });
 
   useEffect(() => {
-    fetch("/api/academic/classes").then(r => r.json()).then(setClasses);
+    fetch("/api/academic/classes").then(r => r.json()).then(d => setClasses(Array.isArray(d) ? d : []));
   }, []);
 
   const handleClassChange = async (classId: string) => {

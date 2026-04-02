@@ -34,14 +34,21 @@ export default async function StudentListReportPage() {
             { key: "class", label: "Class" },
             { key: "section", label: "Section" },
             { key: "year", label: "Academic Year" },
-            { key: "gender", label: "Gender", render: r => GENDER[String(r.gender)] ?? r.gender },
-            { key: "dob", label: "DOB", render: r => formatDate(r.dob) },
-            { key: "phone_no", label: "Phone", render: r => r.phone_no || "-" },
-            {
-              key: "status", label: "Status",
-              render: r => <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
-            },
+            { key: "gender", label: "Gender" },
+            { key: "dob", label: "DOB" },
+            { key: "phone_no", label: "Phone" },
+            { key: "status", label: "Status" },
           ]}
+          rows={rows.map(r => ({
+            name: r.name,
+            class: r.class,
+            section: r.section,
+            year: r.year,
+            gender: GENDER[String(r.gender)] ?? r.gender,
+            dob: formatDate(r.dob),
+            phone_no: r.phone_no || "-",
+            status: <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
+          }))}
         />
       </div>
     </div>

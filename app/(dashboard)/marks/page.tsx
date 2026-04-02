@@ -31,20 +31,17 @@ export default async function MarksPage() {
           data={rows}
           searchKeys={[]}
           columns={[
-            {
-              key: "registrations", label: "Student",
-              render: r => (r as unknown as { registrations: { students: { name: string } | null } | null }).registrations?.students?.name ?? "-",
-            },
-            {
-              key: "exams", label: "Exam",
-              render: r => (r as unknown as { exams: { name: string } | null }).exams?.name ?? "-",
-            },
-            {
-              key: "subjects", label: "Subject",
-              render: r => (r as unknown as { subjects: { name: string } | null }).subjects?.name ?? "-",
-            },
+            { key: "registrations", label: "Student" },
+            { key: "exams", label: "Exam" },
+            { key: "subjects", label: "Subject" },
             { key: "marks", label: "Marks" },
           ]}
+          rows={rows.map(r => ({
+            registrations: (r as unknown as { registrations: { students: { name: string } | null } | null }).registrations?.students?.name ?? "-",
+            exams: (r as unknown as { exams: { name: string } | null }).exams?.name ?? "-",
+            subjects: (r as unknown as { subjects: { name: string } | null }).subjects?.name ?? "-",
+            marks: r.marks,
+          }))}
         />
       </div>
     </div>

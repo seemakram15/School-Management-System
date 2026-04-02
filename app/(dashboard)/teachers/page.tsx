@@ -36,17 +36,23 @@ export default async function TeachersPage() {
           columns={[
             { key: "id_card", label: "ID" },
             { key: "name", label: "Name" },
-            { key: "email", label: "Email", render: r => r.email || "-" },
-            { key: "phone_no", label: "Phone", render: r => r.phone_no || "-" },
-            { key: "gender", label: "Gender", render: r => GENDER[r.gender as 1 | 2] },
-            { key: "joining_date", label: "Joined", render: r => formatDate(r.joining_date) },
-            {
-              key: "status", label: "Status",
-              render: r => <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
-            },
+            { key: "email", label: "Email" },
+            { key: "phone_no", label: "Phone" },
+            { key: "gender", label: "Gender" },
+            { key: "joining_date", label: "Joined" },
+            { key: "status", label: "Status" },
           ]}
-          actions={row => (
-            <div className="flex items-center justify-end gap-2">
+          rows={rows.map(r => ({
+            id_card: r.id_card,
+            name: r.name,
+            email: r.email || "-",
+            phone_no: r.phone_no || "-",
+            gender: GENDER[r.gender as 1 | 2],
+            joining_date: formatDate(r.joining_date),
+            status: <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
+          }))}
+          rowActions={rows.map(row => (
+            <div key={row.id} className="flex items-center justify-end gap-2">
               <Link href={`/teachers/${row.id}`}>
                 <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Eye className="w-3.5 h-3.5" /></button>
               </Link>
@@ -54,7 +60,7 @@ export default async function TeachersPage() {
                 <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
               </Link>
             </div>
-          )}
+          ))}
         />
       </div>
     </div>

@@ -35,24 +35,28 @@ export default async function EmployeesPage() {
           columns={[
             { key: "id_card", label: "ID Card" },
             { key: "name", label: "Name" },
-            {
-              key: "roles", label: "Role",
-              render: r => {
-                const role = (r as unknown as { roles: { name: string } | null }).roles;
-                return <Badge variant="info">{role?.name ?? "-"}</Badge>;
-              },
-            },
-            { key: "email", label: "Email", render: r => r.email || "-" },
-            { key: "phone_no", label: "Phone", render: r => r.phone_no || "-" },
-            { key: "gender", label: "Gender", render: r => GENDER[String(r.gender)] ?? r.gender },
-            { key: "joining_date", label: "Joined", render: r => formatDate(r.joining_date) },
-            {
-              key: "status", label: "Status",
-              render: r => <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
-            },
+            { key: "roles", label: "Role" },
+            { key: "email", label: "Email" },
+            { key: "phone_no", label: "Phone" },
+            { key: "gender", label: "Gender" },
+            { key: "joining_date", label: "Joined" },
+            { key: "status", label: "Status" },
           ]}
-          actions={row => (
-            <div className="flex items-center justify-end gap-2">
+          rows={rows.map(r => {
+            const role = (r as unknown as { roles: { name: string } | null }).roles;
+            return {
+              id_card: r.id_card,
+              name: r.name,
+              roles: <Badge variant="info">{role?.name ?? "-"}</Badge>,
+              email: r.email || "-",
+              phone_no: r.phone_no || "-",
+              gender: GENDER[String(r.gender)] ?? r.gender,
+              joining_date: formatDate(r.joining_date),
+              status: <Badge variant={r.status === 1 ? "success" : "danger"}>{r.status === 1 ? "Active" : "Inactive"}</Badge>,
+            };
+          })}
+          rowActions={rows.map(row => (
+            <div key={row.id} className="flex items-center justify-end gap-2">
               <Link href={`/hrm/employees/${row.id}`}>
                 <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Eye className="w-3.5 h-3.5" /></button>
               </Link>
@@ -60,7 +64,7 @@ export default async function EmployeesPage() {
                 <button className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"><Pencil className="w-3.5 h-3.5" /></button>
               </Link>
             </div>
-          )}
+          ))}
         />
       </div>
     </div>
