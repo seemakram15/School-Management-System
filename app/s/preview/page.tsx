@@ -1,10 +1,17 @@
+import { createClient } from "@/lib/supabase/server";
 import SchoolLandingClient from "../[slug]/SchoolLandingClient";
 
 // Visual preview of the school landing page with demo data — no DB required
-export default function LandingPreview() {
+export default async function LandingPreview() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isOwner = user
+    ? !!(await supabase.from("users").select("is_service_provider").eq("id", user.id).single()).data?.is_service_provider
+    : false;
+
   return (
     <SchoolLandingClient
-      isOwner
+      isOwner={isOwner}
       school={{
         id: "preview",
         name: "Al-Noor Public School",

@@ -13,7 +13,7 @@ interface ConfirmDialogProps {
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  variant?: "destructive" | "default";
+  variant?: "danger" | "primary";
   onConfirm: () => void;
   loading?: boolean;
 }
@@ -25,7 +25,7 @@ export function ConfirmDialog({
   description,
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
-  variant = "destructive",
+  variant = "danger",
   onConfirm,
   loading = false,
 }: ConfirmDialogProps) {

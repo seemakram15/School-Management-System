@@ -194,8 +194,8 @@ export default function LandingPage() {
 
           {/* CTAs */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/signup" className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-lg font-bold shadow-2xl shadow-orange-900/40 hover:shadow-orange-900/60 hover:scale-[1.02] active:scale-95 transition-all">
-              Start for Free
+            <Link href="/s/preview" target="_blank" rel="noopener noreferrer" className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-lg font-bold shadow-2xl shadow-orange-900/40 hover:shadow-orange-900/60 hover:scale-[1.02] active:scale-95 transition-all">
+              View Live Demo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a href="#pricing" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border border-white/15 text-white/80 text-lg font-semibold hover:bg-white/5 hover:border-white/25 active:scale-95 transition-all backdrop-blur-sm">

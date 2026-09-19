@@ -784,6 +784,11 @@ export default function SchoolLandingClient({ school, slides: initSlides, princi
                 <span className="sm:hidden">Edit</span>
               </button>
             )}
+            {!isOwner && (
+              <Link href="/login" className="flex items-center gap-1.5 px-4 py-2 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 text-sm font-semibold rounded-xl transition-all">
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </nav>

@@ -9,7 +9,7 @@ async function getSchoolData(slug: string) {
 
   const { data: school } = await supabase
     .from("schools")
-    .select("id, name, slug, tagline, description, address, phone, email, logo_url")
+    .select("id, name, slug, tagline, description, address, phone, email, logo_url, owner_id")
     .eq("slug", slug)
     .eq("status", 1)
     .single();
@@ -26,9 +26,19 @@ async function getSchoolData(slug: string) {
   if (!sub) return null;
 
   const { data: { user } } = await supabase.auth.getUser();
-  const isOwner = user ? (
-    await supabase.from("schools").select("id").eq("id", school.id).eq("owner_id", user.id).single()
-  ).data !== null : false;
+  let isOwner = false;
+  if (user) {
+    if (user.id === school.owner_id) {
+      isOwner = true;
+    } else {
+      const { data: profile } = await supabase
+        .from("users")
+        .select("is_super_admin, is_service_provider, school_id")
+        .eq("id", user.id)
+        .single();
+      isOwner = !!profile?.is_service_provider || (!!profile?.is_super_admin && profile.school_id === school.id);
+    }
+  }
 
   const [students, employees, slides, principal, events, achievements] = await Promise.all([
     supabase.from("students").select("id", { count: "exact", head: true }).eq("school_id", school.id).eq("status", 1),
