@@ -12,6 +12,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "All payment details required" }, { status: 400 });
   }
 
+  // Validate screenshotUrl is a Supabase storage URL owned by this user.
+  // Pin the host to our Supabase project and anchor the path — .includes() alone
+  // is bypassable via crafted hostnames or embedded path segments.
+  const supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL!).host;
+  const urlObj = (() => { try { return new URL(screenshotUrl); } catch { return null; } })();
+  const validPath =
+    urlObj &&
+    urlObj.host === supabaseHost &&
+    !urlObj.pathname.includes("..") &&
+    urlObj.pathname.includes(`/payment-screenshots/${user.id}-`);
+  if (!validPath) {
+    return NextResponse.json({ error: "Invalid screenshot URL" }, { status: 400 });
+  }
+
   // Get school owned by this user
   const { data: school } = await supabase
     .from("schools")

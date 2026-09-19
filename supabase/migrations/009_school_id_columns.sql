@@ -44,7 +44,16 @@ create policy "authenticated_read_students" on students
 
 drop policy if exists "authenticated_write_students" on students;
 create policy "authenticated_write_students" on students
-  for all using (
+  for all
+  using (
+    auth.uid() is not null
+    and (
+      school_id in (select id from schools where owner_id = auth.uid())
+      or school_id = (select school_id from users where id = auth.uid())
+      or exists (select 1 from users where id = auth.uid() and is_service_provider = true)
+    )
+  )
+  with check (
     auth.uid() is not null
     and (
       school_id in (select id from schools where owner_id = auth.uid())
@@ -67,7 +76,16 @@ create policy "authenticated_read_employees" on employees
 
 drop policy if exists "authenticated_write_employees" on employees;
 create policy "authenticated_write_employees" on employees
-  for all using (
+  for all
+  using (
+    auth.uid() is not null
+    and (
+      school_id in (select id from schools where owner_id = auth.uid())
+      or school_id = (select school_id from users where id = auth.uid())
+      or exists (select 1 from users where id = auth.uid() and is_service_provider = true)
+    )
+  )
+  with check (
     auth.uid() is not null
     and (
       school_id in (select id from schools where owner_id = auth.uid())
