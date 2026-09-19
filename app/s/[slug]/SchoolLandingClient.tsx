@@ -49,7 +49,7 @@ const DEMO_ACHIEVEMENTS: Achievement[] = [
 
 const DEMO_EVENTS: Event[] = [
   { id: "1", title: "Annual Day Celebrations", description: "A dazzling evening of talent, performances, and prize distribution.", event_date: "2024-03-15", image_url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80" },
-  { id: "2", title: "Science & Technology Fair", description: "Students showcased innovative projects judged by industry experts.", event_date: "2024-02-10", image_url: "https://images.unsplash.com/photo-1532094349884-543559372b31?w=600&q=80" },
+  { id: "2", title: "Science & Technology Fair", description: "Students showcased innovative projects judged by industry experts.", event_date: "2024-02-10", image_url: "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=600&q=80" },
   { id: "3", title: "Parent-Teacher Meeting", description: "Quarterly academic progress review with parents and faculty.", event_date: "2024-01-20", image_url: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" },
 ];
 
@@ -78,15 +78,18 @@ function HeroCarousel({ slides, schoolName, tagline, editMode, onEdit }: {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const go = useCallback((dir: number) => {
+    if (!slides.length) return;
     setCurrent(c => (c + dir + slides.length) % slides.length);
   }, [slides.length]);
 
   useEffect(() => {
+    if (!slides.length) return;
     timerRef.current = setTimeout(() => go(1), 5000);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [current, go]);
+  }, [current, go, slides.length]);
 
-  const slide = slides[current];
+  const slide = slides[current] ?? slides[0];
+  if (!slide) return <div className="h-[85vh] min-h-[520px] bg-slate-900" />;
 
   return (
     <section className="relative h-[85vh] min-h-[520px] overflow-hidden group">
