@@ -7,9 +7,24 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["roles"]["Insert"]>;
       };
       users: {
-        Row: { id: string; name: string; username: string; email: string; phone_no: string | null; force_logout: boolean; status: 0 | 1; is_super_admin: boolean; created_at: string; updated_at: string; deleted_at: string | null };
+        Row: { id: string; name: string; username: string; email: string; phone_no: string | null; force_logout: boolean; status: 0 | 1; is_super_admin: boolean; is_service_provider: boolean; school_id: string | null; created_at: string; updated_at: string; deleted_at: string | null };
         Insert: Omit<Database["public"]["Tables"]["users"]["Row"], "id" | "created_at" | "updated_at">;
         Update: Partial<Database["public"]["Tables"]["users"]["Insert"]>;
+      };
+      schools: {
+        Row: { id: string; name: string; slug: string; owner_id: string | null; tagline: string | null; description: string | null; address: string | null; phone: string | null; email: string | null; logo_url: string | null; hero_image_url: string | null; status: 0 | 1; created_at: string; updated_at: string };
+        Insert: Omit<Database["public"]["Tables"]["schools"]["Row"], "id" | "created_at" | "updated_at">;
+        Update: Partial<Database["public"]["Tables"]["schools"]["Insert"]>;
+      };
+      plans: {
+        Row: { id: number; name: string; price_pkr: number; max_students: number | null; features: string[]; is_popular: boolean; sort_order: number; status: 0 | 1; created_at: string };
+        Insert: Omit<Database["public"]["Tables"]["plans"]["Row"], "id" | "created_at">;
+        Update: Partial<Database["public"]["Tables"]["plans"]["Insert"]>;
+      };
+      subscriptions: {
+        Row: { id: string; school_id: string; plan_id: number; status: "pending" | "approved" | "rejected"; payment_method: "jazzcash" | "meezan"; transaction_id: string; screenshot_url: string; admin_notes: string | null; approved_at: string | null; approved_by: string | null; created_at: string; updated_at: string };
+        Insert: Omit<Database["public"]["Tables"]["subscriptions"]["Row"], "id" | "created_at" | "updated_at">;
+        Update: Partial<Database["public"]["Tables"]["subscriptions"]["Insert"]>;
       };
       user_roles: {
         Row: { user_id: string; role_id: number };
@@ -170,3 +185,6 @@ export type Mark = Database["public"]["Tables"]["marks"]["Row"];
 export type Result = Database["public"]["Tables"]["results"]["Row"];
 export type Notification = Database["public"]["Tables"]["notifications"]["Row"];
 export type Event = Database["public"]["Tables"]["events"]["Row"];
+export type School = Database["public"]["Tables"]["schools"]["Row"];
+export type Plan = Database["public"]["Tables"]["plans"]["Row"];
+export type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
