@@ -126,15 +126,15 @@ export function Sidebar() {
   return (
     <aside className="flex flex-col w-64 min-h-screen bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] shrink-0">
       {/* Brand */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-[hsl(var(--sidebar-border))]">
+      <Link href="/dashboard" className="flex items-center gap-3 px-5 py-5 border-b border-[hsl(var(--sidebar-border))] hover:bg-white/5 transition-colors">
         <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/20">
           <GraduationCap className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <p className="font-bold text-sm leading-tight">CloudSchool</p>
+          <p className="font-bold text-sm leading-tight">Schoolly</p>
           <p className="text-xs text-white/50 leading-tight">Management System</p>
         </div>
-      </div>
+      </Link>
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto sidebar-scroll py-3 px-2">

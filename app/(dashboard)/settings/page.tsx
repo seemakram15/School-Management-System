@@ -20,7 +20,7 @@ export default async function SettingsPage() {
         <form className="space-y-4" action="/api/settings" method="POST">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Institute Name">
-              <Input name="institute_name" defaultValue={meta.institute_name} placeholder="CloudSchool" />
+              <Input name="institute_name" defaultValue={meta.institute_name} placeholder="Schoolly" />
             </FormField>
             <FormField label="Short Name">
               <Input name="institute_short_name" defaultValue={meta.institute_short_name} placeholder="CS" />

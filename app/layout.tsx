@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CloudSchool – School Management System",
-  description: "A complete school management system",
+  title: "Schoolly – Pakistan's School Management Platform",
+  description: "Schoolly gives every school a powerful management system. Students, teachers, exams, attendance, and reports all in one place.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

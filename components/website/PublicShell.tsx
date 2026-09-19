@@ -17,10 +17,10 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <PublicHeader instituteName={meta.institute_name || "CloudSchool"} />
+      <PublicHeader instituteName={meta.institute_name || "Schoolly"} />
       <main className="flex-1">{children}</main>
       <PublicFooter
-        instituteName={meta.institute_name || "CloudSchool"}
+        instituteName={meta.institute_name || "Schoolly"}
         address={meta.institute_address || ""}
         phone={meta.institute_phone || ""}
         email={meta.institute_email || ""}
