@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-const STATUS_VARIANTS: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  unpaid: "destructive",
-  partial: "secondary",
-  paid: "default",
-  waived: "outline",
+const STATUS_VARIANTS: Record<string, "default" | "danger" | "warning" | "success" | "info"> = {
+  unpaid: "danger",
+  partial: "warning",
+  paid: "success",
+  waived: "info",
 };
 
 const MONTHS = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -93,7 +93,7 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Pro
                 <td className="px-4 py-3 font-mono">PKR {Number(inv.net_amount).toLocaleString()}</td>
                 <td className="px-4 py-3 text-muted-foreground">{inv.due_date}</td>
                 <td className="px-4 py-3">
-                  <Badge variant={STATUS_VARIANTS[inv.status] ?? "outline"} className="capitalize">{inv.status}</Badge>
+                  <Badge variant={STATUS_VARIANTS[inv.status] ?? "default"} className="capitalize">{inv.status}</Badge>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <Link href={`/fees/invoices/${inv.id}`} className="text-primary text-xs hover:underline">View →</Link>

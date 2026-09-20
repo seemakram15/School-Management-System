@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import PaymentForm from "./PaymentForm";
 
-const STATUS_VARIANTS: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  unpaid: "destructive", partial: "secondary", paid: "default", waived: "outline",
+const STATUS_VARIANTS: Record<string, "default" | "danger" | "warning" | "success" | "info"> = {
+  unpaid: "danger", partial: "warning", paid: "success", waived: "info",
 };
 const MONTHS = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -40,7 +40,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           <p className="text-sm text-muted-foreground">{student?.name} — {cls?.name}</p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant={STATUS_VARIANTS[inv.status] ?? "outline"} className="capitalize text-sm px-3 py-1">{inv.status}</Badge>
+          <Badge variant={STATUS_VARIANTS[inv.status] ?? "default"} className="capitalize text-sm px-3 py-1">{inv.status}</Badge>
           <Link href={`/fees/students/${student?.id}`} className="text-xs text-primary hover:underline">Full History →</Link>
         </div>
       </div>

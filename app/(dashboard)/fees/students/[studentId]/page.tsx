@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
-const STATUS_VARIANTS: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  unpaid: "destructive", partial: "secondary", paid: "default", waived: "outline",
+const STATUS_VARIANTS: Record<string, "default" | "danger" | "warning" | "success" | "info"> = {
+  unpaid: "danger", partial: "warning", paid: "success", waived: "info",
 };
 const MONTHS = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -89,7 +89,7 @@ export default async function StudentFeeHistoryPage({ params }: { params: Promis
                   <td className="px-4 py-2">{inv.month ? `${MONTHS[inv.month]} ${inv.year}` : `${inv.year}`}</td>
                   <td className="px-4 py-2 font-mono">PKR {Number(inv.net_amount).toLocaleString()}</td>
                   <td className="px-4 py-2 font-mono text-green-400">PKR {paid.toLocaleString()}</td>
-                  <td className="px-4 py-2"><Badge variant={STATUS_VARIANTS[inv.status] ?? "outline"} className="capitalize">{inv.status}</Badge></td>
+                  <td className="px-4 py-2"><Badge variant={STATUS_VARIANTS[inv.status] ?? "default"} className="capitalize">{inv.status}</Badge></td>
                   <td className="px-4 py-2">
                     <Link href={`/fees/invoices/${inv.id}`} className="text-primary text-xs hover:underline">View →</Link>
                   </td>

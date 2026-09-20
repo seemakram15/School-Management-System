@@ -38,7 +38,7 @@ export default async function FeeTypesPage() {
                 <td className="px-4 py-3 font-medium text-foreground">{t.name}</td>
                 <td className="px-4 py-3 text-muted-foreground">{t.description || "—"}</td>
                 <td className="px-4 py-3">
-                  <Badge variant={t.status === 1 ? "default" : "secondary"}>{t.status === 1 ? "Active" : "Inactive"}</Badge>
+                  <Badge variant={t.status === 1 ? "success" : "default"}>{t.status === 1 ? "Active" : "Inactive"}</Badge>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <Link href={`/fees/types/${t.id}/edit`} className="text-primary text-xs hover:underline">Edit</Link>

@@ -118,7 +118,7 @@ export default async function FeeReportsPage({ searchParams }: { searchParams: P
                     <td className="px-4 py-3">{inv.month ? `${MONTHS[inv.month]} ${inv.year}` : `${inv.year}`}</td>
                     <td className="px-4 py-3 font-mono text-red-400">PKR {Number(inv.net_amount).toLocaleString()}</td>
                     <td className="px-4 py-3 text-muted-foreground">{inv.due_date}</td>
-                    <td className="px-4 py-3"><Badge variant="destructive" className="capitalize">{inv.status}</Badge></td>
+                    <td className="px-4 py-3"><Badge variant="danger" className="capitalize">{inv.status}</Badge></td>
                     <td className="px-4 py-3">
                       <Link href={`/fees/invoices/${inv.id}`} className="text-primary text-xs hover:underline">Collect →</Link>
                     </td>

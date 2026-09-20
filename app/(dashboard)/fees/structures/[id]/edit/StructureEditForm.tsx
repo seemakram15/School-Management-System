@@ -59,7 +59,7 @@ export default function StructureEditForm({ structure }: { structure: { id: numb
       <div className="flex gap-3 pt-2">
         <Button type="submit" disabled={loading}>{loading ? "Saving…" : "Update"}</Button>
         <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
-        <Button type="button" variant="destructive" onClick={handleDelete} className="ml-auto">Delete</Button>
+        <Button type="button" variant="danger" onClick={handleDelete} className="ml-auto">Delete</Button>
       </div>
     </form>
   );

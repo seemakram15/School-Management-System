@@ -101,7 +101,7 @@ export default function CollectFeePage() {
                       <td className="px-4 py-3">{inv.month ? `${MONTHS[inv.month]} ${inv.year}` : `${inv.year}`}</td>
                       <td className="px-4 py-3 font-mono">PKR {Number(inv.net_amount).toLocaleString()}</td>
                       <td className="px-4 py-3">
-                        <Badge variant={inv.status === "partial" ? "secondary" : "destructive"} className="capitalize">{inv.status}</Badge>
+                        <Badge variant={inv.status === "partial" ? "warning" : "danger"} className="capitalize">{inv.status}</Badge>
                       </td>
                       <td className="px-4 py-3 text-right">
                         <Link href={`/fees/invoices/${inv.id}`} className="text-primary text-xs hover:underline font-medium">Collect →</Link>

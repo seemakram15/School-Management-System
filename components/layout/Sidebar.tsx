@@ -136,34 +136,49 @@ export function Sidebar() {
     return children.some(c => isActive(c.href));
   }
 
+  const isOpen = (label: string, children?: { href: string }[]) =>
+    openMenus.includes(label) || (children ? isGroupActive(children) : false);
+
   return (
-    <aside className="flex flex-col w-64 min-h-screen bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] shrink-0">
+    <aside
+      className="flex flex-col w-64 min-h-screen shrink-0 text-[hsl(var(--sidebar-foreground))]"
+      style={{ background: "var(--gradient-sidebar)" }}
+    >
       {/* Brand */}
-      <Link href="/dashboard" className="flex items-center gap-3 px-5 py-5 border-b border-[hsl(var(--sidebar-border))] hover:bg-white/5 transition-colors">
-        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/20">
-          <GraduationCap className="w-5 h-5 text-primary" />
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-3 px-5 py-5 border-b border-white/8 hover:bg-white/5 transition-colors group"
+      >
+        <div
+          className="flex items-center justify-center w-9 h-9 rounded-xl shrink-0"
+          style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-primary)" }}
+        >
+          <GraduationCap className="w-5 h-5 text-white" />
         </div>
         <div>
-          <p className="font-bold text-sm leading-tight">Schoolly</p>
-          <p className="text-xs text-white/50 leading-tight">Management System</p>
+          <p className="font-bold text-sm leading-tight text-white">Schoolly</p>
+          <p className="text-[11px] text-white/40 leading-tight mt-0.5">Management System</p>
         </div>
       </Link>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto sidebar-scroll py-3 px-2">
+      <nav className="flex-1 overflow-y-auto sidebar-scroll py-4 px-3 space-y-0.5">
         {nav.map(item => (
           <div key={item.label}>
             {item.href ? (
               <Link
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mb-0.5",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
                   isActive(item.href)
-                    ? "bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-accent-foreground))]"
-                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                    ? "text-white shadow-lg"
+                    : "text-white/60 hover:bg-white/8 hover:text-white/90"
                 )}
+                style={isActive(item.href) ? { background: "var(--gradient-primary)", boxShadow: "0 2px 12px rgba(37,99,235,.4)" } : undefined}
               >
-                {item.icon}
+                <span className={cn("shrink-0 transition-transform duration-200", isActive(item.href) ? "scale-110" : "")}>
+                  {item.icon}
+                </span>
                 {item.label}
               </Link>
             ) : (
@@ -171,34 +186,39 @@ export function Sidebar() {
                 <button
                   onClick={() => toggle(item.label)}
                   className={cn(
-                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mb-0.5",
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
                     item.children && isGroupActive(item.children)
                       ? "bg-white/10 text-white"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                      : "text-white/60 hover:bg-white/8 hover:text-white/90"
                   )}
                 >
-                  {item.icon}
+                  <span className="shrink-0">{item.icon}</span>
                   <span className="flex-1 text-left">{item.label}</span>
                   <ChevronDown
                     className={cn(
-                      "w-3.5 h-3.5 transition-transform",
-                      openMenus.includes(item.label) || (item.children && isGroupActive(item.children)) ? "rotate-180" : ""
+                      "w-3.5 h-3.5 transition-transform duration-300 text-white/40",
+                      isOpen(item.label, item.children) ? "rotate-180 text-white/70" : ""
                     )}
                   />
                 </button>
-                {(openMenus.includes(item.label) || (item.children && isGroupActive(item.children))) && item.children && (
-                  <div className="ml-4 mb-1 border-l border-white/10 pl-3 space-y-0.5">
+
+                {isOpen(item.label, item.children) && item.children && (
+                  <div className="submenu-enter ml-3 mt-0.5 mb-1 border-l-2 border-white/10 pl-3 space-y-0.5">
                     {item.children.map(child => (
                       <Link
                         key={child.href}
                         href={child.href}
                         className={cn(
-                          "block px-2 py-2 rounded-md text-xs font-medium transition-colors",
+                          "flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150",
                           isActive(child.href)
-                            ? "bg-[hsl(var(--sidebar-accent))] text-white"
-                            : "text-white/60 hover:bg-white/10 hover:text-white"
+                            ? "text-white"
+                            : "text-white/50 hover:bg-white/8 hover:text-white/85"
                         )}
+                        style={isActive(child.href) ? { background: "linear-gradient(90deg,rgba(37,99,235,.25),rgba(79,70,229,.15))", borderLeft: "2px solid #3b82f6" } : undefined}
                       >
+                        <span className={cn("w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200",
+                          isActive(child.href) ? "bg-blue-400 shadow-sm shadow-blue-400/50" : "bg-white/20"
+                        )} />
                         {child.label}
                       </Link>
                     ))}
@@ -211,13 +231,13 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-[hsl(var(--sidebar-border))] px-4 py-3">
+      <div className="border-t border-white/8 px-3 py-3">
         <form action="/api/auth/logout" method="POST">
           <button
             type="submit"
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/60 hover:bg-white/10 hover:text-white transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-white/50 hover:bg-red-500/15 hover:text-red-400 transition-all duration-200 group"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
             Sign out
           </button>
         </form>
