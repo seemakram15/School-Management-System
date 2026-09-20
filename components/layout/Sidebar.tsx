@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, GraduationCap, BookOpen, ClipboardList,
   CalendarCheck, Briefcase, UserCheck, FileText, Settings, ChevronDown,
-  School, Trophy, BarChart3, Bell, LogOut, Shield, Building2,
+  School, Trophy, BarChart3, Bell, LogOut, Shield, Building2, DollarSign,
 } from "lucide-react";
 
 type NavItem = {
@@ -63,6 +63,19 @@ const nav: NavItem[] = [
       { label: "Enter Marks", href: "/marks" },
       { label: "Results", href: "/results" },
       { label: "Promotion", href: "/promotion" },
+    ],
+  },
+  {
+    label: "Fees",
+    icon: <DollarSign className="w-4 h-4" />,
+    children: [
+      { label: "Fee Dashboard", href: "/fees" },
+      { label: "Fee Types", href: "/fees/types" },
+      { label: "Fee Structures", href: "/fees/structures" },
+      { label: "Invoices", href: "/fees/invoices" },
+      { label: "Collect Fee", href: "/fees/collect" },
+      { label: "Generate Invoices", href: "/fees/invoices/generate" },
+      { label: "Reports", href: "/fees/reports" },
     ],
   },
   {
