@@ -3,7 +3,7 @@
 
 -- Hero carousel slides
 create table if not exists school_hero_slides (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   school_id uuid not null references schools(id) on delete cascade,
   image_url text not null,
   caption text,
@@ -14,7 +14,7 @@ create index if not exists school_hero_slides_school_id on school_hero_slides(sc
 
 -- Principal / headmaster message
 create table if not exists school_principal (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   school_id uuid not null unique references schools(id) on delete cascade,
   name text not null,
   title text not null default 'Principal',
@@ -25,7 +25,7 @@ create table if not exists school_principal (
 
 -- Events (recent school events)
 create table if not exists school_events (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   school_id uuid not null references schools(id) on delete cascade,
   title text not null,
   description text,
@@ -39,7 +39,7 @@ create index if not exists school_events_school_id on school_events(school_id, s
 
 -- Achievements
 create table if not exists school_achievements (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   school_id uuid not null references schools(id) on delete cascade,
   title text not null,
   description text,

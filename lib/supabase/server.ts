@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
@@ -27,11 +28,9 @@ export async function createClient() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createAdminClient() {
-  return createServerClient<any>(
+  return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll: () => [], setAll: () => {} } }
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 }

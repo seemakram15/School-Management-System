@@ -57,12 +57,12 @@ export default function ExamNewPage() {
         <h2 className="text-xl font-bold text-foreground">Exam</h2>
         <p className="text-sm text-muted-foreground">Add New Exam</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Exam Name *">
             <Input value={form.name} onChange={set("name")} placeholder="e.g. Half Yearly Exam 2025" required maxLength={255} />
           </FormField>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Class *">
               <Select value={form.class_id} onChange={set("class_id")} required>
                 <option value="">Select class</option>
@@ -76,7 +76,7 @@ export default function ExamNewPage() {
               </Select>
             </FormField>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Start Date *">
               <Input type="date" value={form.start_date} onChange={set("start_date")} required />
             </FormField>

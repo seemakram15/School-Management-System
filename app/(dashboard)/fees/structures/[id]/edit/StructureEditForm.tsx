@@ -32,12 +32,12 @@ export default function StructureEditForm({ structure }: { structure: { id: numb
   return (
     <form onSubmit={handleSubmit} className="bg-card rounded-xl border border-border p-6 space-y-4">
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground pb-2 border-b border-border">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-muted-foreground pb-2 border-b border-border">
         <div><span className="block text-xs mb-1">Fee Type</span><strong className="text-foreground">{structure.fee_types?.name}</strong></div>
         <div><span className="block text-xs mb-1">Class</span><strong className="text-foreground">{structure.i_classes?.name}</strong></div>
         <div><span className="block text-xs mb-1">Academic Year</span><strong className="text-foreground">{structure.academic_years?.title}</strong></div>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="col-span-1">
           <label className="block text-sm font-medium mb-1">Amount (PKR) *</label>
           <input name="amount" type="number" min="0" step="0.01" defaultValue={structure.amount} required className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-1 focus:ring-ring" />

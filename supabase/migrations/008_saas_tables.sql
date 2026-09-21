@@ -8,7 +8,7 @@ alter table users
 
 -- Schools table — one per approved school owner
 create table if not exists schools (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   slug text not null unique,
   owner_id uuid references users(id) on delete cascade,
@@ -64,7 +64,7 @@ on conflict do nothing;
 
 -- Subscriptions — tracks plan purchase + payment proof
 create table if not exists subscriptions (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   school_id uuid not null references schools(id) on delete cascade,
   plan_id int not null references plans(id),
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),

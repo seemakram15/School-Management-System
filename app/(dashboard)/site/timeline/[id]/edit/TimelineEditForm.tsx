@@ -52,7 +52,7 @@ export default function TimelineEditForm({ item }: { item: ITimelineItem }) {
         <h2 className="text-xl font-bold text-foreground">Timeline</h2>
         <p className="text-sm text-muted-foreground">Edit Timeline Item</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Year *">
             <Input value={form.year} onChange={e => setForm(f => ({ ...f, year: e.target.value }))} required maxLength={20} />

@@ -55,9 +55,9 @@ export default function StatisticEditForm({ statistic }: { statistic: IStatistic
         <h2 className="text-xl font-bold text-foreground">Statistic</h2>
         <p className="text-sm text-muted-foreground">Edit Statistic</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Label *">
               <Input value={form.label} onChange={set("label")} placeholder="e.g. Students Enrolled" required maxLength={100} />
             </FormField>
@@ -65,7 +65,7 @@ export default function StatisticEditForm({ statistic }: { statistic: IStatistic
               <Input value={form.value} onChange={set("value")} placeholder="e.g. 1200+" required maxLength={50} />
             </FormField>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Icon">
               <Input value={form.icon} onChange={set("icon")} placeholder="e.g. users or 🎓" />
             </FormField>

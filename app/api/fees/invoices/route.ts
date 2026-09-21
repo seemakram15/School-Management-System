@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
+import { createNotification } from "@/lib/notifications";
 
 async function requireAuth() {
   const auth = await createClient();
@@ -58,7 +59,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!await requireAuth()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = await requireAuth();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const supabase = createAdminClient();
   const { class_id, academic_year_id, fee_type_id, month, year } = await request.json();
 
@@ -136,6 +138,17 @@ export async function POST(request: NextRequest) {
     });
 
     if (!error) created++;
+  }
+
+  if (created > 0 && user) {
+    const months = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    await createNotification({
+      type: "invoice_generated",
+      notifiable_id: user.id,
+      message: `${created} invoice${created > 1 ? "s" : ""} generated for ${months[parseInt(month)]} ${year}`,
+      link: "/fees/invoices",
+      meta: { created, skipped, month, year },
+    });
   }
 
   return NextResponse.json({ created, skipped });

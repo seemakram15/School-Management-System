@@ -37,7 +37,7 @@ export default function FaqNewPage() {
         <h2 className="text-xl font-bold text-foreground">FAQ</h2>
         <p className="text-sm text-muted-foreground">Add New FAQ</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Question *">
             <Textarea rows={2} value={form.question} onChange={e => setForm(f => ({ ...f, question: e.target.value }))} placeholder="e.g. What are the admission requirements?" required />

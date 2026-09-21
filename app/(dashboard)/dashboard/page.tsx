@@ -84,7 +84,7 @@ export default async function DashboardPage() {
           <div className="px-5 py-4 border-b border-border">
             <h3 className="font-semibold text-foreground">Quick Actions</h3>
           </div>
-          <div className="grid grid-cols-2 gap-3 p-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-5">
             {[
               { label: "Add Student", href: "/students/new", icon: GraduationCap },
               { label: "Take Attendance", href: "/attendance/students", icon: CalendarCheck },

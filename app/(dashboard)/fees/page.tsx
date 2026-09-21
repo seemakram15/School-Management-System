@@ -89,7 +89,7 @@ export default async function FeeDashboardPage() {
           <div className="px-5 py-4 border-b border-border">
             <h3 className="font-semibold text-sm text-foreground">Quick Actions</h3>
           </div>
-          <div className="grid grid-cols-2 gap-3 p-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-5">
             {quickActions.map(a => (
               <Link key={a.label} href={a.href}
                 className="flex items-center gap-2 p-3 rounded-lg border border-border hover:bg-muted transition text-sm font-medium text-foreground hover:text-primary">

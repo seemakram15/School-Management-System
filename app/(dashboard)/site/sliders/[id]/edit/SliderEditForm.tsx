@@ -49,7 +49,7 @@ export default function SliderEditForm({ slider }: { slider: ISlider }) {
         <h2 className="text-xl font-bold text-foreground">Slider</h2>
         <p className="text-sm text-muted-foreground">Edit Slider</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Title *">
             <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Welcome to Our School" required maxLength={200} />

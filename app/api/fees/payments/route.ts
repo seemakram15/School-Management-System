@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { createClient } from "@/lib/supabase/server";
+import { createNotification } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   const authClient = await createClient();
@@ -14,10 +15,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "invoice_id and a positive amount are required" }, { status: 400 });
   }
 
-  // Get invoice to check net_amount and current paid total
   const { data: invoice, error: invErr } = await supabase
     .from("fee_invoices")
-    .select("id, net_amount, status, fee_payments(amount)")
+    .select("id, invoice_no, net_amount, status, school_id, fee_payments(amount), registrations(students(name))")
     .eq("id", parseInt(invoice_id))
     .single();
 
@@ -42,16 +42,30 @@ export async function POST(request: NextRequest) {
 
   if (pErr) return NextResponse.json({ error: pErr.message }, { status: 500 });
 
-  // Recalculate total paid and update invoice status
   const previousPaid = (invoice.fee_payments as { amount: number }[])
     .reduce((sum, p) => sum + Number(p.amount), 0);
   const totalPaid = previousPaid + parseFloat(amount);
-
   const newStatus = totalPaid >= Number(invoice.net_amount) ? "paid" : "partial";
+
   await supabase
     .from("fee_invoices")
     .update({ status: newStatus, updated_at: new Date().toISOString() })
     .eq("id", parseInt(invoice_id));
+
+  const studentName = (invoice.registrations as any)?.students?.name ?? "Student";
+  const notifType = newStatus === "paid" ? "fee_paid" : "fee_partial";
+  const msg = newStatus === "paid"
+    ? `Fee fully paid for ${studentName} — Invoice #${invoice.invoice_no}`
+    : `Partial payment of PKR ${parseFloat(amount).toLocaleString()} recorded for ${studentName}`;
+
+  await createNotification({
+    type: notifType,
+    notifiable_id: user.id,
+    school_id: (invoice as any).school_id ?? undefined,
+    message: msg,
+    link: `/fees/invoices/${invoice_id}`,
+    meta: { invoice_id, amount: parseFloat(amount), status: newStatus },
+  });
 
   return NextResponse.json({ id: payment.id, status: newStatus }, { status: 201 });
 }

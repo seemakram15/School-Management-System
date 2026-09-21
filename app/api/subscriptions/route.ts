@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
+  // User client for auth only; admin client for all DB reads/writes (bypasses RLS)
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -13,8 +14,6 @@ export async function POST(req: NextRequest) {
   }
 
   // Validate screenshotUrl is a Supabase storage URL owned by this user.
-  // Pin the host to our Supabase project and anchor the path — .includes() alone
-  // is bypassable via crafted hostnames or embedded path segments.
   const supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL!).host;
   const urlObj = (() => { try { return new URL(screenshotUrl); } catch { return null; } })();
   const validPath =
@@ -26,8 +25,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid screenshot URL" }, { status: 400 });
   }
 
+  const admin = createAdminClient();
+
   // Get school owned by this user
-  const { data: school } = await supabase
+  const { data: school } = await admin
     .from("schools")
     .select("id")
     .eq("owner_id", user.id)
@@ -36,18 +37,14 @@ export async function POST(req: NextRequest) {
   if (!school) return NextResponse.json({ error: "School not found" }, { status: 404 });
 
   // Check if already has a pending/approved subscription
-  const { data: existing } = await supabase
+  const { data: existing } = await admin
     .from("subscriptions")
     .select("id, status")
     .eq("school_id", school.id)
     .in("status", ["pending", "approved"])
     .single();
 
-  if (existing) {
-    return NextResponse.json({ error: "Subscription already exists", status: existing.status }, { status: 409 });
-  }
-
-  const { data: sub, error } = await supabase
+  const { data: sub, error } = await admin
     .from("subscriptions")
     .insert({
       school_id: school.id,

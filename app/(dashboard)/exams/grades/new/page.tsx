@@ -58,9 +58,9 @@ export default function GradeNewPage() {
         <h2 className="text-xl font-bold text-foreground">Grade</h2>
         <p className="text-sm text-muted-foreground">Add New Grade</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Academic Year *">
               <Select value={form.academic_year_id} onChange={set("academic_year_id")} required>
                 <option value="">Select year</option>
@@ -71,7 +71,7 @@ export default function GradeNewPage() {
               <Input value={form.name} onChange={set("name")} placeholder="e.g. A+" required maxLength={20} />
             </FormField>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Percent From *">
               <Input type="number" step="0.01" min={0} max={100} value={form.percent_from} onChange={set("percent_from")} required />
             </FormField>
@@ -79,7 +79,7 @@ export default function GradeNewPage() {
               <Input type="number" step="0.01" min={0} max={100} value={form.percent_to} onChange={set("percent_to")} required />
             </FormField>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Grade Point *">
               <Input type="number" step="0.01" min={0} value={form.grade_point} onChange={set("grade_point")} required />
             </FormField>

@@ -90,8 +90,8 @@ export default function ExamRulesPage() {
         <p className="text-sm text-muted-foreground">Set total &amp; pass marks per subject for an exam</p>
       </div>
 
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-3xl space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6 space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField label="Exam *">
             <Select value={examId} onChange={e => setExamId(e.target.value)}>
               <option value="">Select exam</option>

@@ -53,7 +53,7 @@ export default function SubjectEditForm({ subject }: { subject: Subject }) {
         <h2 className="text-xl font-bold text-foreground">Subject</h2>
         <p className="text-sm text-muted-foreground">Edit Subject</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Class *">
             <Select value={form.class_id} onChange={set("class_id")} required>
@@ -61,7 +61,7 @@ export default function SubjectEditForm({ subject }: { subject: Subject }) {
               {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </Select>
           </FormField>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Subject Name *">
               <Input value={form.name} onChange={set("name")} placeholder="e.g. Mathematics" required maxLength={100} />
             </FormField>

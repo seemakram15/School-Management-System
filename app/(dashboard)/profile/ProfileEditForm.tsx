@@ -37,7 +37,7 @@ export default function ProfileEditForm({ name, phone_no }: { name: string; phon
   };
 
   return (
-    <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <FormField label="Name *">
           <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required maxLength={255} />

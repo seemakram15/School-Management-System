@@ -51,7 +51,7 @@ export default function TestimonialEditForm({ testimonial }: { testimonial: ITes
         <h2 className="text-xl font-bold text-foreground">Testimonial</h2>
         <p className="text-sm text-muted-foreground">Edit Testimonial</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Name *">
             <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. John Doe" required maxLength={100} />

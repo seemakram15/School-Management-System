@@ -50,7 +50,7 @@ export default function FaqEditForm({ faq }: { faq: IFaq }) {
         <h2 className="text-xl font-bold text-foreground">FAQ</h2>
         <p className="text-sm text-muted-foreground">Edit FAQ</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Question *">
             <Textarea rows={2} value={form.question} onChange={e => setForm(f => ({ ...f, question: e.target.value }))} required />

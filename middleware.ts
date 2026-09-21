@@ -19,6 +19,9 @@ export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
   const { pathname } = request.nextUrl;
 
+  // API routes handle their own auth — never intercept them
+  if (pathname.startsWith("/api/")) return supabaseResponse;
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -95,19 +98,21 @@ export async function middleware(request: NextRequest) {
     const status = sub?.status;
 
     if (!status) {
-      // Has school but no subscription → payment
-      if (!pathname.startsWith("/payment")) {
-        return NextResponse.redirect(new URL("/payment", request.url));
+      // Has school but no subscription → back to plans so user re-selects on every login
+      if (!ONBOARDING_PATHS.some(p => pathname.startsWith(p))) {
+        return NextResponse.redirect(new URL("/plans", request.url));
       }
       return supabaseResponse;
     }
 
-    if (status === "pending" || status === "rejected") {
+    if (status === "rejected") {
       if (!pathname.startsWith("/pending")) {
         return NextResponse.redirect(new URL("/pending", request.url));
       }
       return supabaseResponse;
     }
+
+    // pending → allow dashboard; the layout shows a "under review" banner
 
     // status === "approved" → allow dashboard
   }

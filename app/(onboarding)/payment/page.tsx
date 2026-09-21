@@ -59,42 +59,45 @@ export default function PaymentPage() {
     setLoading(true);
     setUploadProgress("Uploading screenshot…");
 
-    // Upload screenshot
-    const formData = new FormData();
-    formData.append("file", file);
-    const uploadRes = await fetch("/api/upload/screenshot", { method: "POST", body: formData });
-    const uploadData = await uploadRes.json();
+    try {
+      // Upload screenshot
+      const formData = new FormData();
+      formData.append("file", file);
+      const uploadRes = await fetch("/api/upload/screenshot", { method: "POST", body: formData });
+      const uploadData = await uploadRes.json();
 
-    if (!uploadRes.ok) {
-      setError(uploadData.error ?? "Screenshot upload failed. Please try again.");
+      if (!uploadRes.ok) {
+        setError(uploadData.error ?? "Screenshot upload failed. Please try again.");
+        return;
+      }
+
+      setUploadProgress("Submitting payment details…");
+
+      // Create subscription
+      const subRes = await fetch("/api/subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planId: Number(planId),
+          paymentMethod: method,
+          transactionId: txId.trim(),
+          screenshotUrl: uploadData.url,
+        }),
+      });
+
+      const subData = await subRes.json();
+      if (!subRes.ok) {
+        setError(subData.error ?? "Failed to submit payment. Please try again.");
+        return;
+      }
+
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error. Please check your connection and try again.");
+    } finally {
       setLoading(false);
       setUploadProgress("");
-      return;
     }
-
-    setUploadProgress("Submitting payment details…");
-
-    // Create subscription
-    const subRes = await fetch("/api/subscriptions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        planId: Number(planId),
-        paymentMethod: method,
-        transactionId: txId.trim(),
-        screenshotUrl: uploadData.url,
-      }),
-    });
-
-    const subData = await subRes.json();
-    if (!subRes.ok) {
-      setError(subData.error ?? "Failed to submit payment. Please try again.");
-      setLoading(false);
-      setUploadProgress("");
-      return;
-    }
-
-    router.push("/pending");
   }
 
   return (

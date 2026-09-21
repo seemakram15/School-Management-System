@@ -45,7 +45,7 @@ export default function SectionNewPage() {
         <h2 className="text-xl font-bold text-foreground">Section</h2>
         <p className="text-sm text-muted-foreground">Add New Section</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Class *">
             <Select value={form.class_id} onChange={set("class_id")} required>

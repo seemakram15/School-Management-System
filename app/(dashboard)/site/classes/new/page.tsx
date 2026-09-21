@@ -44,7 +44,7 @@ export default function ClassProfileNewPage() {
         <h2 className="text-xl font-bold text-foreground">Class Profile</h2>
         <p className="text-sm text-muted-foreground">Add New Class Profile</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Class *">
             <Select value={form.class_id} onChange={e => setForm(f => ({ ...f, class_id: e.target.value }))} required>

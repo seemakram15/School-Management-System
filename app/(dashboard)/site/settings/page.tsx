@@ -10,7 +10,7 @@ export default async function SiteSettingsPage() {
   ((metas ?? []) as unknown as { meta_key: string; meta_value: string | null }[]).forEach(m => { meta[m.meta_key] = m.meta_value ?? ""; });
 
   return (
-    <div className="space-y-5 max-w-2xl">
+    <div className="space-y-5">
       <div>
         <h2 className="text-xl font-bold text-foreground">Site Settings</h2>
         <p className="text-sm text-muted-foreground mt-0.5">Manage public website settings</p>

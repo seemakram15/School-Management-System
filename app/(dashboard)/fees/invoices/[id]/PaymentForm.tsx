@@ -35,7 +35,7 @@ export default function PaymentForm({ invoiceId, balance }: { invoiceId: number;
       <h3 className="font-semibold text-sm mb-4 text-foreground">Collect Payment</h3>
       <form onSubmit={handleSubmit} className="space-y-3">
         {error && <p className="text-sm text-destructive">{error}</p>}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-xs text-muted-foreground mb-1">Amount (PKR) *</label>
             <input name="amount" type="number" min="1" step="0.01" defaultValue={balance > 0 ? balance : ""} required

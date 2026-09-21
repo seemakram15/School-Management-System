@@ -71,7 +71,63 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
         </div>
       </form>
 
-      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      {/* Mobile cards */}
+      <div className="sm:hidden space-y-3">
+        {!(students ?? []).length ? (
+          <p className="text-center py-10 text-muted-foreground text-sm">
+            No students found.{" "}
+            <Link href="/students/new" className="text-primary hover:underline">Add the first student.</Link>
+          </p>
+        ) : (students ?? []).map((reg) => {
+          const s = reg.students;
+          const cls = reg.i_classes;
+          const sec = reg.sections;
+          return (
+            <div key={reg.id} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+              <div className="flex items-start justify-between gap-2 px-4 pt-4 pb-3 border-b border-border/60">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-muted overflow-hidden shrink-0">
+                    <img src={s?.photo ? `/storage/student/${s.photo}` : "/images/avatar.jpg"} alt="" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-mono text-muted-foreground leading-none mb-1">{reg.regi_no}</p>
+                    <p className="font-bold text-foreground text-base leading-tight">{s?.name}</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Link href={`/students/${reg.id}`}><Button size="sm" variant="outline" className="h-7 px-2 text-xs">View</Button></Link>
+                  {!reg.is_promoted && (
+                    <Link href={`/students/${reg.id}/edit`}><Button size="sm" variant="outline" className="h-7 px-2 text-xs">Edit</Button></Link>
+                  )}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-3">
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-0.5">Class</p>
+                  <p className="text-sm text-foreground">{cls?.name ?? "—"}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-0.5">Section</p>
+                  <p className="text-sm text-foreground">{sec?.name ?? "—"}</p>
+                </div>
+                {s?.phone_no && (
+                  <div>
+                    <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-0.5">Phone</p>
+                    <p className="text-sm text-foreground">{s.phone_no}</p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-0.5">Status</p>
+                  <StudentStatusToggle id={reg.id} initialStatus={reg.status === 1} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden sm:block bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, GraduationCap, BookOpen, ClipboardList,
   CalendarCheck, Briefcase, UserCheck, FileText, Settings, ChevronDown,
-  School, Trophy, BarChart3, Bell, LogOut, Shield, Building2, DollarSign,
+  School, Trophy, BarChart3, Bell, LogOut, Shield, Building2, DollarSign, X,
 } from "lucide-react";
 
 type NavItem = {
@@ -118,7 +118,7 @@ const nav: NavItem[] = [
   { label: "Settings", href: "/settings", icon: <Settings className="w-4 h-4" /> },
 ];
 
-export function Sidebar() {
+export function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
 
@@ -141,14 +141,16 @@ export function Sidebar() {
 
   return (
     <aside
-      className="flex flex-col w-64 min-h-screen shrink-0 text-[hsl(var(--sidebar-foreground))]"
+      className="flex flex-col w-64 h-full min-h-screen shrink-0 text-[hsl(var(--sidebar-foreground))]"
       style={{ background: "var(--gradient-sidebar)" }}
     >
       {/* Brand */}
-      <Link
-        href="/dashboard"
-        className="flex items-center gap-3 px-5 py-5 border-b border-white/8 hover:bg-white/5 transition-colors group"
-      >
+      <div className="flex items-center border-b border-white/8">
+        <Link
+          href="/dashboard"
+          onClick={onClose}
+          className="flex items-center gap-3 flex-1 px-5 py-5 hover:bg-white/5 transition-colors group"
+        >
         <div
           className="flex items-center justify-center w-9 h-9 rounded-xl shrink-0"
           style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-primary)" }}
@@ -159,7 +161,17 @@ export function Sidebar() {
           <p className="font-bold text-sm leading-tight text-white">Schoolly</p>
           <p className="text-[11px] text-white/40 leading-tight mt-0.5">Management System</p>
         </div>
-      </Link>
+        </Link>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="lg:hidden p-2 mr-3 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Close menu"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto sidebar-scroll py-4 px-3 space-y-0.5">
@@ -168,6 +180,7 @@ export function Sidebar() {
             {item.href ? (
               <Link
                 href={item.href}
+                onClick={onClose}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
                   isActive(item.href)
@@ -208,6 +221,7 @@ export function Sidebar() {
                       <Link
                         key={child.href}
                         href={child.href}
+                        onClick={onClose}
                         className={cn(
                           "flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150",
                           isActive(child.href)

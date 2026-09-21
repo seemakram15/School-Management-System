@@ -18,7 +18,7 @@ export default async function NotificationsPage() {
   const unread = rows.filter(r => !r.read_at).length;
 
   return (
-    <div className="space-y-5 max-w-2xl">
+    <div className="space-y-5">
       <div>
         <h2 className="text-xl font-bold text-foreground">Notifications</h2>
         <p className="text-sm text-muted-foreground mt-0.5">{unread} unread</p>

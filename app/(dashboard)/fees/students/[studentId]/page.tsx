@@ -42,7 +42,7 @@ export default async function StudentFeeHistoryPage({ params }: { params: Promis
   const totalDue = totalBilled - totalPaid;
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-xl font-bold text-foreground">{student.name}</h2>
@@ -55,7 +55,7 @@ export default async function StudentFeeHistoryPage({ params }: { params: Promis
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Total Billed", value: totalBilled, color: "text-blue-400" },
           { label: "Total Paid", value: totalPaid, color: "text-green-400" },
@@ -69,7 +69,7 @@ export default async function StudentFeeHistoryPage({ params }: { params: Promis
       </div>
 
       {/* Invoice list */}
-      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
         <div className="px-5 py-3 border-b border-border font-semibold text-sm text-foreground">All Invoices</div>
         <table className="w-full text-sm">
           <thead className="bg-muted/50"><tr>

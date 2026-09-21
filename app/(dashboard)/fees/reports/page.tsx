@@ -70,7 +70,7 @@ export default async function FeeReportsPage({ searchParams }: { searchParams: P
             <p className="text-sm font-medium text-green-400">Total Collected ({from} to {to})</p>
             <p className="text-xl font-bold text-green-400">PKR {totalCollection.toLocaleString()}</p>
           </div>
-          <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+          <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-muted/50 border-b border-border"><tr>
                 {["Date","Student","Class","Fee Type","Amount","Method"].map(h => (
@@ -100,7 +100,7 @@ export default async function FeeReportsPage({ searchParams }: { searchParams: P
             <p className="text-sm font-medium text-red-400">Total Outstanding (Overdue)</p>
             <p className="text-xl font-bold text-red-400">PKR {totalDefaulter.toLocaleString()}</p>
           </div>
-          <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+          <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-muted/50 border-b border-border"><tr>
                 {["Student","Class","Fee Type","Period","Amount","Due Date","Status",""].map(h => (

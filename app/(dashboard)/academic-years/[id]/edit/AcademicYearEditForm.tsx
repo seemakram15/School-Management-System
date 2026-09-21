@@ -55,7 +55,7 @@ export default function AcademicYearEditForm({ year }: { year: AcademicYear }) {
         <h2 className="text-xl font-bold text-foreground">Academic Year</h2>
         <p className="text-sm text-muted-foreground">Edit Academic Year</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Title *">
             <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Academic Year 2025-2026" required maxLength={255} />
@@ -63,7 +63,7 @@ export default function AcademicYearEditForm({ year }: { year: AcademicYear }) {
           <FormField label="Year *">
             <Input value={form.year} onChange={e => setForm(f => ({ ...f, year: e.target.value }))} placeholder="e.g. 2025-2026" required maxLength={10} />
           </FormField>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Start Date">
               <Input type="date" value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))} />
             </FormField>

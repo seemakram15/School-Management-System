@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
+import { createNotification } from "@/lib/notifications";
 
 export async function GET(request: NextRequest) {
   const supabase = createAdminClient();
@@ -71,6 +73,19 @@ export async function POST(request: NextRequest) {
   }
   if (fourth_subject) {
     await supabase.from("registration_subjects").insert({ registration_id: reg!.id, subject_id: fourth_subject, type: "elective" });
+  }
+
+  // Notify school owner
+  const authClient = await createClient();
+  const { data: { user } } = await authClient.auth.getUser();
+  if (user) {
+    await createNotification({
+      type: "student_enrolled",
+      notifiable_id: user.id,
+      message: `New student enrolled: ${name} (${regiNo})`,
+      link: `/students/${student!.id}`,
+      meta: { student_id: student!.id, regi_no: regiNo, class_id },
+    });
   }
 
   return NextResponse.json({ id: reg!.id, regi_no: regiNo });

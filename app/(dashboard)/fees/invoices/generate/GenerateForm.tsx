@@ -53,7 +53,7 @@ export default function GenerateForm({ feeTypes, classes, years, defaultYearId }
           </select>
         </div>
       ))}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="block text-sm font-medium mb-1">Month <span className="text-destructive">*</span></label>
           <select name="month" required defaultValue={today.getMonth() + 1} className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-1 focus:ring-ring">

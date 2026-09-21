@@ -27,7 +27,7 @@ export default async function ProfilePage() {
         <p className="text-sm text-muted-foreground">View and update your profile</p>
       </div>
 
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl flex items-center gap-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6 flex items-center gap-4">
         <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
           <User className="w-7 h-7 text-primary" />
         </div>

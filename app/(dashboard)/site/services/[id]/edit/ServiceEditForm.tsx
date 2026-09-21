@@ -55,7 +55,7 @@ export default function ServiceEditForm({ service }: { service: IService }) {
         <h2 className="text-xl font-bold text-foreground">Service</h2>
         <p className="text-sm text-muted-foreground">Edit Service</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Title *">
             <Input value={form.title} onChange={set("title")} placeholder="e.g. Online Admission" required maxLength={200} />
@@ -63,7 +63,7 @@ export default function ServiceEditForm({ service }: { service: IService }) {
           <FormField label="Description">
             <Textarea rows={3} value={form.description} onChange={set("description")} placeholder="Short description of the service" />
           </FormField>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Icon">
               <Input value={form.icon} onChange={set("icon")} placeholder="e.g. graduation-cap or 🎓" />
             </FormField>

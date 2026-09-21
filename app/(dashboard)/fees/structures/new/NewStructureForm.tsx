@@ -48,7 +48,7 @@ export default function NewStructureForm({ feeTypes, classes, years }: { feeType
           </select>
         </div>
       ))}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="col-span-1">
           <label className="block text-sm font-medium mb-1">Amount (PKR) *</label>
           <input name="amount" type="number" min="0" step="0.01" required className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-1 focus:ring-ring" placeholder="e.g. 2000" />

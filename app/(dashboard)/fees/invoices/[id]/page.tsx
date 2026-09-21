@@ -33,7 +33,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
   const cls = (inv.registrations as any)?.i_classes;
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-xl font-bold text-foreground">Invoice #{inv.invoice_no}</h2>
@@ -47,7 +47,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
       {/* Invoice details grid */}
       <div className="bg-card rounded-xl border border-border p-5 text-sm">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
           {[
             ["Fee Type", (inv.fee_types as any)?.name],
             ["Period", inv.month ? `${MONTHS[inv.month]} ${inv.year}` : `${inv.year}`],
@@ -75,7 +75,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
       {/* Payment history */}
       {(inv.fee_payments as any[]).length > 0 && (
-        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
           <div className="px-5 py-3 border-b border-border font-semibold text-sm text-foreground">Payment History</div>
           <table className="w-full text-sm">
             <thead className="bg-muted/50"><tr>

@@ -40,7 +40,7 @@ export default function ClassNewPage() {
         <h2 className="text-xl font-bold text-foreground">Class</h2>
         <p className="text-sm text-muted-foreground">Add New Class</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Class Name *">
             <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Class One" required maxLength={100} />

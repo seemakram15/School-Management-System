@@ -22,7 +22,7 @@ export default async function GalleryPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {images.map(img => (
-              <div key={img.id} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+              <div key={img.id} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
                 <img src={img.image} alt={img.caption ?? ""} className="w-full h-48 object-cover" />
                 {img.caption && <p className="p-3 text-sm text-muted-foreground">{img.caption}</p>}
               </div>

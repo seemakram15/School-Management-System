@@ -27,7 +27,7 @@ export default async function StudentAttendancePage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Present", count: present, color: "text-green-600 bg-green-50 dark:bg-green-950" },
           { label: "Absent", count: absent, color: "text-red-600 bg-red-50 dark:bg-red-950" },
@@ -41,7 +41,7 @@ export default async function StudentAttendancePage() {
       </div>
 
       {/* Table */}
-      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-border">
           <h3 className="font-semibold text-foreground">Today's Records ({rows.length})</h3>
         </div>

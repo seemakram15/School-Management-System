@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
+import { SignOutButton } from "@/components/shared/SignOutButton";
 
 export default function OnboardingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,9 +13,7 @@ export default function OnboardingLayout({ children }: { children: React.ReactNo
           </div>
           <span className="font-bold text-white text-lg">Schoolly</span>
         </Link>
-        <Link href="/login" className="text-sm text-slate-400 hover:text-white transition-colors">
-          Already have an account? <span className="text-blue-400 font-medium">Sign in</span>
-        </Link>
+        <SignOutButton />
       </div>
 
       {/* Main content */}

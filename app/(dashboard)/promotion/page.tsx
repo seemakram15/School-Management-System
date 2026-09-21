@@ -8,7 +8,7 @@ export default async function PromotionPage() {
   const classes = (classesRaw ?? []) as { id: number; name: string }[];
 
   return (
-    <div className="space-y-5 max-w-2xl">
+    <div className="space-y-5">
       <div>
         <h2 className="text-xl font-bold text-foreground">Student Promotion</h2>
         <p className="text-sm text-muted-foreground mt-0.5">Promote students to the next class/year</p>

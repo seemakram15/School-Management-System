@@ -72,7 +72,7 @@ export default function ResultGeneratePage() {
         </nav>
       </div>
 
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-2xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Academic Year">

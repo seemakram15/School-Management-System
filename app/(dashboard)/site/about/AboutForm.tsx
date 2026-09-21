@@ -81,7 +81,7 @@ export default function AboutForm({
   };
 
   return (
-    <div className="space-y-5 max-w-2xl">
+    <div className="space-y-5">
       <div>
         <h2 className="text-xl font-bold text-foreground">About Content</h2>
         <p className="text-sm text-muted-foreground mt-0.5">Manage the public "About Us" page content</p>

@@ -37,7 +37,7 @@ export default function EventNewPage() {
         <h2 className="text-xl font-bold text-foreground">Event</h2>
         <p className="text-sm text-muted-foreground">Add New Event</p>
       </div>
-      <div className="bg-card rounded-xl border border-border shadow-sm p-6 max-w-xl">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField label="Title *">
             <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Annual Sports Day" required maxLength={200} />

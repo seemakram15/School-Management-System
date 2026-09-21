@@ -16,6 +16,7 @@ function sniffMime(buf: Uint8Array): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  // Auth check uses user client; all storage ops use admin to bypass RLS
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -37,30 +38,30 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = ALLOWED[mime];
-  const path = `payment-screenshots/${user.id}-${Date.now()}.${ext}`;
+  const storagePath = `payment-screenshots/${user.id}-${Date.now()}.${ext}`;
 
-  const { error } = await supabase.storage
+  const { createAdminClient } = await import("@/lib/supabase/server");
+  const admin = createAdminClient();
+
+  // Ensure bucket exists
+  await admin.storage.createBucket("payment-screenshots", { public: false }).catch(() => {});
+
+  const { error: uploadError } = await admin.storage
     .from("payment-screenshots")
-    .upload(path, bytes, { contentType: mime, upsert: false });
+    .upload(storagePath, bytes, { contentType: mime, upsert: false });
 
-  if (error) {
-    const { createAdminClient } = await import("@/lib/supabase/server");
-    const admin = createAdminClient();
-    await admin.storage.createBucket("payment-screenshots", { public: false });
-    const { error: retry } = await supabase.storage
-      .from("payment-screenshots")
-      .upload(path, bytes, { contentType: mime, upsert: false });
-    if (retry) return NextResponse.json({ error: retry.message }, { status: 500 });
+  if (uploadError) {
+    return NextResponse.json({ error: uploadError.message }, { status: 500 });
   }
 
-  // Return a signed URL (60 min) so the screenshot is never publicly crawlable
-  const { data: signed, error: signErr } = await supabase.storage
+  // Signed URL valid for 1 hour — enough for the submission flow
+  const { data: signed, error: signErr } = await admin.storage
     .from("payment-screenshots")
-    .createSignedUrl(path, 3600);
+    .createSignedUrl(storagePath, 3600);
 
   if (signErr || !signed) {
     return NextResponse.json({ error: "Upload succeeded but URL generation failed" }, { status: 500 });
   }
 
-  return NextResponse.json({ url: signed.signedUrl, path });
+  return NextResponse.json({ url: signed.signedUrl, path: storagePath });
 }

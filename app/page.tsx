@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   GraduationCap, Users, BookOpen, CalendarCheck, BarChart3,
-  CheckCircle2, ArrowRight, Star, Shield, Zap, HeartHandshake,
+  CheckCircle2, ArrowRight, Shield, Zap, HeartHandshake,
   Phone, Mail, Building2, ChevronDown, Sparkles, TrendingUp, Award
 } from "lucide-react";
 
@@ -60,18 +60,48 @@ const FEATURES = [
 ];
 
 const FAQS = [
-  { q: "How do I get started?",               a: "Sign up, pick a plan, send your payment to our JazzCash or Meezan Bank account with your transaction ID and a screenshot. We review within 24 hours and activate your school." },
-  { q: "What payment methods do you accept?", a: "We accept JazzCash (03034063608) and Meezan Bank transfers (IBAN: PK92MEZN0002720104818375). After payment, upload the screenshot in the portal." },
-  { q: "Can I change my plan later?",          a: "Yes. Contact our support and we'll upgrade your plan on the next billing cycle. Downgrades take effect at the end of your current period." },
-  { q: "Is my school's data secure?",          a: "All data is stored on Supabase with row-level security. Each school's data is fully isolated — no other school can see your records." },
-  { q: "How many users can I add?",            a: "Each plan supports unlimited staff accounts (teachers, admins). The student limit depends on your plan tier." },
+  {
+    q: "How long does it take to activate my school after payment?",
+    a: "Our team manually verifies every payment. Once you submit your transaction ID and screenshot, we activate your school within 24 hours — usually much faster during business hours.",
+  },
+  {
+    q: "What payment methods do you accept?",
+    a: "We accept JazzCash (0303-4063608) and Meezan Bank transfer (Account: 02720104818375, IBAN: PK92MEZN0002720104818375). After sending the payment, upload the screenshot in your portal — that's all you need to do.",
+  },
+  {
+    q: "Can I add multiple admins and teachers for my school?",
+    a: "Yes. Once your school is activated you can create unlimited staff accounts — admins, teachers, accountants — each with role-based permissions so people only see what they need.",
+  },
+  {
+    q: "How is my school's data kept private from other schools?",
+    a: "Every school's data is fully isolated at the database level using row-level security. No one else — not even us — can accidentally read another school's students, marks, or records.",
+  },
+  {
+    q: "Can teachers mark attendance from a mobile device?",
+    a: "Yes. Schoolly is fully responsive and works on any smartphone browser. Teachers can mark student attendance, view timetables, and enter marks without installing an app.",
+  },
+  {
+    q: "How do I generate result cards and progress reports?",
+    a: "Go to Exams → Results in your dashboard. After entering marks you can generate printable result cards per student or per class, and download attendance and performance reports in seconds.",
+  },
+  {
+    q: "What happens if I forget my password?",
+    a: "Use the 'Forgot password' link on the login page. We'll send a secure reset link to your registered email. If you have trouble, call us on 0303-4063608 and we'll sort it out.",
+  },
+  {
+    q: "Can I upgrade or downgrade my plan later?",
+    a: "Yes. Contact us any time and we'll adjust your plan. Upgrades take effect immediately; downgrades apply at the start of your next billing month.",
+  },
+  {
+    q: "Is there a free trial before I pay?",
+    a: "We offer a live demo at schoolly.pk/s/preview so you can explore every feature before signing up. If you have questions after the demo, call us and we'll walk you through it personally.",
+  },
+  {
+    q: "What if I face a technical problem after activation?",
+    a: "Reach us via WhatsApp or call 0303-4063608 any day 9 am – 9 pm PKT. Premium plan users also get dedicated account manager support. We resolve most issues within a few hours.",
+  },
 ];
 
-const TESTIMONIALS = [
-  { name: "Muhammad Tariq", role: "Principal, Lahore Grammar School",   text: "Schoolly cut our admin workload by 60%. Attendance, marks, reports — all in one place." },
-  { name: "Sara Iqbal",      role: "Admin, Al-Noor Academy, Karachi",   text: "Setup took less than an hour. Our teachers love how simple the attendance system is." },
-  { name: "Ahmed Raza",      role: "Director, Beaconhouse Campus, Multan", text: "Finally a school system built for Pakistani schools. JazzCash payment was super easy." },
-];
 
 export default function LandingPage() {
   return (
@@ -321,35 +351,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
-      <section className="py-20 bg-slate-900/50 border-y border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <div className="flex justify-center gap-0.5 mb-3">
-              {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}
-            </div>
-            <h2 className="text-3xl font-extrabold text-white">Loved by school leaders across Pakistan</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map(t => (
-              <div key={t.name} className="bg-slate-900 border border-white/8 rounded-2xl p-7 relative">
-                <div className="text-4xl text-blue-500/40 font-serif leading-none mb-3">&ldquo;</div>
-                <p className="text-slate-300 text-sm leading-relaxed mb-5">{t.text}</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-white/8">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
-                    {t.name[0]}
-                  </div>
-                  <div>
-                    <p className="text-white text-sm font-semibold">{t.name}</p>
-                    <p className="text-slate-500 text-xs">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ─── PRICING ─── */}
       <section id="pricing" className="py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -396,44 +397,13 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* Payment methods */}
-          <div className="mt-14 bg-slate-900 border border-white/8 rounded-2xl p-8">
-            <h3 className="text-xl font-bold text-white mb-6 text-center">How to pay</h3>
-            <div className="grid sm:grid-cols-2 gap-5">
-              <div className="flex gap-4 items-start p-5 rounded-xl bg-orange-500/10 border border-orange-500/20">
-                <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
-                  <Phone className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="font-bold text-white">JazzCash</p>
-                  <p className="text-2xl font-mono font-bold text-orange-400 mt-1">0303-4063608</p>
-                  <p className="text-sm text-slate-400 mt-1">Account: <strong className="text-slate-300">Waseem Akram</strong></p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-start p-5 rounded-xl bg-green-500/10 border border-green-500/20">
-                <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-green-400 shrink-0">
-                  <Building2 className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="font-bold text-white">Meezan Bank</p>
-                  <p className="text-sm font-mono font-semibold text-green-400 mt-1">02720104818375</p>
-                  <p className="text-xs text-slate-500 mt-0.5">IBAN: PK92MEZN0002720104818375</p>
-                  <p className="text-xs text-slate-500">New Anarkali Bazar, Lahore</p>
-                  <p className="text-sm text-slate-400 mt-1">Account: <strong className="text-slate-300">Waseem Akram</strong></p>
-                </div>
-              </div>
-            </div>
-            <p className="mt-5 text-sm text-slate-500 text-center">
-              Sign up → pick a plan → upload your transaction screenshot. School activated within 24 hours.
-            </p>
-          </div>
         </div>
       </section>
 
       {/* ─── FAQ ─── */}
       <section id="faq" className="py-24 max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-4xl font-extrabold text-white">Common questions</h2>
+          <h2 className="text-4xl font-extrabold text-white">Frequently asked questions</h2>
           <p className="mt-3 text-slate-400">Everything you need to know before getting started.</p>
         </div>
         <div className="space-y-3">
@@ -494,10 +464,6 @@ export default function LandingPage() {
                 <span className="font-bold text-white text-lg">Schoolly</span>
               </div>
               <p className="text-sm text-slate-400 leading-relaxed">Pakistan&apos;s complete school management platform — built for modern institutions.</p>
-              <div className="flex gap-1 mt-3">
-                {[1,2,3,4,5].map(i => <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />)}
-                <span className="text-xs text-slate-500 ml-1">Rated 4.9/5</span>
-              </div>
             </div>
             <div>
               <p className="font-semibold text-white mb-4">Quick Links</p>

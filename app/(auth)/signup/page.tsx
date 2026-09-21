@@ -23,6 +23,7 @@ export default function SignupPage() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState("");
 
   function set(field: string, value: string) {
     setForm(f => ({ ...f, [field]: value }));
@@ -43,38 +44,47 @@ export default function SignupPage() {
     }
 
     setLoading(true);
+    setStep("Creating your account…");
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        schoolName: form.schoolName,
-        ownerName: form.ownerName,
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          schoolName: form.schoolName,
+          ownerName: form.ownerName,
+          email: form.email,
+          phone: form.phone,
+          password: form.password,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setStep("Signing you in…");
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email: form.email,
-        phone: form.phone,
         password: form.password,
-      }),
-    });
+      });
 
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error ?? "Something went wrong. Please try again.");
+      if (signInError) {
+        setError("Account created! Please sign in.");
+        router.push("/login");
+        return;
+      }
+
+      setStep("Almost there…");
+      router.push("/plans");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error. Please try again.");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
-
-    if (signInError) {
-      setError("Account created! Please sign in.");
-      router.push("/login");
-      return;
-    }
-
-    router.push("/plans");
   }
 
   return (
@@ -280,7 +290,7 @@ export default function SignupPage() {
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg shadow-blue-200 mt-1"
             >
               {loading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Creating your school…</>
+                <><Loader2 className="w-4 h-4 animate-spin" /> {step || "Please wait…"}</>
               ) : (
                 "Create My School Account →"
               )}
